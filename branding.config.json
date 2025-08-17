@@ -1,0 +1,15 @@
+{
+    "clientName":"Makeup & Hair Styling by Arshnoor Kaur",
+    "shortName":"NOOR",
+    "logoPath":"/Assets/noor-logo.png",
+    "primaryColor":"#E0186C",
+    "primary600":"#DE3782",
+    "primary500":"#DC5E94",
+    "primary100":"#F3E8EE",
+    "accentColor":"#F7C948",
+    "bgColor":"#FFFFFF",
+    "textColor":"#1F2937",
+    "coverGradient":"linear-gradient(135deg,#E0186C 0%,#DC5E94 60%,#F3E8EE 100%)",
+    "fontFamilies":["Playfair Display","Inter","sans-serif"]
+  }
+  
