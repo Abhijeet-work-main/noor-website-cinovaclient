@@ -1,27 +1,27 @@
 [
   {
-    "title": "Party Makeup",
-    "price": "₹3,500",
-    "description": "Soft glam suitable for parties and celebrations. Skin-focused, long-wear finish.",
+    "title": "Party makeup",
+    "price": "₹3500",
+    "description": "Perfect for birthdays, dinners, festive events, and casual celebrations.",
     "color": "#E0186C"
   },
   {
     "title": "Special Occasion Makeup",
-    "price": "₹8,000",
-    "description": "Elevated glam for special events with detailed eye work and custom lashes.",
-    "color": "#DE3782"
+    "price": "₹8000",
+    "description": "(Mehendi | Haldi | Satsang | Path | Roka | Sagan | Cocktail)\nSoft glam or full glam looks tailored to match your event’s vibe.",
+    "color": "#E0186C"
   },
   {
-    "title": "Engagement Makeup",
-    "price": "₹12,000",
-    "description": "Signature engagement look with premium products, hairstyling and veil setting.",
-    "color": "#DC5E94"
+    "title": "engagement makeup",
+    "price": "₹12000",
+    "description": "A timeless, elegant look for your engagement day with flawless HD finish.",
+    "color": "#E0186C"
   },
   {
     "title": "Bridal Makeup",
-    "price": "₹20,000",
-    "description": "Luxury bridal glam tailored to your features. Includes hairstyling and touch-up kit.",
-    "color": "#F7C948"
+    "price": "₹20000",
+    "description": "For your most special day — a luxurious, long-lasting, picture-perfect makeover.",
+    "color": "#E0186C"
   }
 ]
 

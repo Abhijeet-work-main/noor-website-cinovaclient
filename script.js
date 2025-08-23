@@ -1441,16 +1441,66 @@ class WhyChooseUsAnimationsController {
 // Render services from JSON
 async function renderServicesFromData() {
     try {
-        const response = await fetch('data/services.json', { cache: 'no-cache' });
-        if (!response.ok) {
-            throw new Error('Failed to load services.json');
+        console.log('[DEBUG] renderServicesFromData called');
+        
+        // Try to fetch the JSON file
+        let services = null;
+        try {
+            const response = await fetch('data/services.json', { 
+                cache: 'no-cache',
+                headers: {
+                    'Accept': 'application/json'
+                }
+            });
+            
+            if (!response.ok) {
+                throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+            }
+            
+            services = await response.json();
+            console.log('[DEBUG] Loaded services from JSON:', services);
+        } catch (fetchError) {
+            console.warn('[DEBUG] Failed to fetch services.json, using fallback data:', fetchError);
+            
+            // Fallback data if fetch fails
+            services = [
+                {
+                    "title": "Party makeup",
+                    "price": "₹3500",
+                    "description": "Perfect for birthdays, dinners, festive events, and casual celebrations.",
+                    "color": "#E0186C"
+                },
+                {
+                    "title": "Special Occasion Makeup",
+                    "price": "₹8000",
+                    "description": "(Mehendi | Haldi | Satsang | Path | Roka | Sagan | Cocktail)\nSoft glam or full glam looks tailored to match your event's vibe.",
+                    "color": "#E0186C"
+                },
+                {
+                    "title": "engagement makeup",
+                    "price": "₹12000",
+                    "description": "A timeless, elegant look for your engagement day with flawless HD finish.",
+                    "color": "#E0186C"
+                },
+                {
+                    "title": "Bridal Makeup",
+                    "price": "₹20000",
+                    "description": "For your most special day — a luxurious, long-lasting, picture-perfect makeover.",
+                    "color": "#E0186C"
+                }
+            ];
         }
-        const services = await response.json();
+        
         const servicesContainer = document.getElementById('services-cards');
-        if (!servicesContainer) return;
-
+        if (!servicesContainer) {
+            console.error('[DEBUG] services-cards container not found!');
+            return;
+        }
+        
+        console.log('[DEBUG] Found services container, rendering', services.length, 'cards');
+        
         const brandColor = getComputedStyle(document.documentElement).getPropertyValue('--accent-primary')?.trim() || '#E0186C';
-
+        
         servicesContainer.innerHTML = services.map(service => {
             const color = service.color || brandColor;
             const priceHtml = service.price ? `<div style="margin-top:0.5rem;font-weight:700;color:${color};">${service.price}</div>` : '';
@@ -1466,8 +1516,12 @@ async function renderServicesFromData() {
                 </div>
             `;
         }).join('');
+        
+        console.log('[DEBUG] Successfully rendered services to DOM');
+        
     } catch (err) {
-        console.error('Error rendering services:', err);
+        console.error('[DEBUG] Critical error in renderServicesFromData:', err);
+        // Even if everything fails, the static HTML will still show
     }
 }
 
@@ -1497,8 +1551,7 @@ async function initializeComponents() {
     const performance = new PerformanceController();
     performance.init();
 
-    // Render services then initialize drag functionality
-    await renderServicesFromData();
+    // Initialize drag functionality (without rendering services)
     const servicesDrag = new ServicesDragController();
     servicesDrag.init();
 
@@ -1522,6 +1575,90 @@ async function initializeComponents() {
             }
         });
     });
+
+    // Initialize accordion functionality - Simple and direct approach
+    function setupAccordion() {
+        console.log('Setting up accordion...');
+        
+        // Wait for DOM to be ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', setupAccordion);
+            return;
+        }
+        
+        const details = document.querySelectorAll('details.policy-item');
+        console.log('Found', details.length, 'policy items');
+        
+        details.forEach((detail, index) => {
+            const summary = detail.querySelector('summary');
+            const toggleIcon = detail.querySelector('.toggle-icon');
+            
+            console.log('Setting up item', index, 'summary:', !!summary, 'icon:', !!toggleIcon);
+            
+            if (summary) {
+                // Remove any existing listeners
+                summary.onclick = null;
+                
+                // Add new click handler
+                summary.onclick = function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    console.log('Clicked on item', index);
+                    
+                    const isOpen = detail.hasAttribute('open');
+                    
+                    // Close all other items
+                    details.forEach((otherDetail, otherIndex) => {
+                        if (otherIndex !== index) {
+                            otherDetail.removeAttribute('open');
+                            const otherIcon = otherDetail.querySelector('.toggle-icon');
+                            if (otherIcon) {
+                                otherIcon.textContent = '+';
+                                otherIcon.style.transform = 'rotate(0deg)';
+                            }
+                        }
+                    });
+                    
+                    // Toggle current item
+                    if (isOpen) {
+                        detail.removeAttribute('open');
+                        if (toggleIcon) {
+                            toggleIcon.textContent = '+';
+                            toggleIcon.style.transform = 'rotate(0deg)';
+                        }
+                    } else {
+                        detail.setAttribute('open', '');
+                        if (toggleIcon) {
+                            toggleIcon.textContent = '-';
+                            toggleIcon.style.transform = 'rotate(180deg)';
+                        }
+                    }
+                    
+                    return false;
+                };
+            }
+        });
+    }
+    
+    // Call setup multiple times to ensure it works
+    setupAccordion();
+    setTimeout(setupAccordion, 100);
+    setTimeout(setupAccordion, 1000);
+
+    // Add animation to the form button
+    const formButton = document.querySelector('a[href="#contact-form"]');
+    if (formButton) {
+        formButton.addEventListener('mouseenter', () => {
+            formButton.style.transform = 'scale(1.05)';
+            formButton.style.boxShadow = '0 10px 30px rgba(224, 24, 108, 0.3)';
+        });
+        
+        formButton.addEventListener('mouseleave', () => {
+            formButton.style.transform = 'scale(1)';
+            formButton.style.boxShadow = 'none';
+        });
+    }
 
     // Make cursor globally available for debugging
     if (typeof window !== 'undefined') {

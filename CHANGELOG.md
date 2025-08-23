@@ -13,3 +13,9 @@ Notes:
 - Fonts loaded via Google Fonts per branding config: Playfair Display and Inter.
 - Kept Cinova visual style and animations; added prefers-reduced-motion support already present.
 
+## feat(content): update about section & remove policy
+
+Edited:
+- `index.html`: Changed "what we do" title to "About me", added the provided About description, removed the entire Booking & Payment Policy section.
+- `style.css`: Updated the `::before` pseudo-element content for the `.about-us` section from "what we do" to "About me".
+
